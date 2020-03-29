@@ -1,19 +1,44 @@
-# TensorFlow Models
+## Overview
+This guide provides step-by-step instructions for how to set up TensorFlow’s Object Detection API on the Raspberry Pi. 
 
-This repository contains a number of different models implemented in [TensorFlow](https://www.tensorflow.org):
+## Installation
+### 1. Update the Raspberry Pi
+```
+sudo apt-get update
+sudo apt-get dist-upgrade
+```
+### 2. Install Python 3.6
+```
+sudo apt-get update
+sudo apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev libhdf5-dev
 
-The [official models](official) are a collection of example models that use TensorFlow's high-level APIs. They are intended to be well-maintained, tested, and kept up to date with the latest stable TensorFlow API. They should also be reasonably optimized for fast performance while still being easy to read. We especially recommend newer TensorFlow users to start here.
+wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz
+sudo tar zxf Python-3.6.8.tgz
+cd Python-3.6.8
+sudo ./configure
+sudo make -j 4
+sudo make altinstall
+```
+### 3. Install TensorFlow
+```
+wget https://www.piwheels.org/simple/tensorflow/tensorflow-1.11.0-cp35-none-linux_armv7l.whl
+mv tensorflow-1.11.0-cp35-none-linux_armv7l.whl tensorflow-1.11.0-cp36-none-linux_armv7l.whl
+sudo pip3.6 install tensorflow-1.11.0-cp36-none-linux_armv7l.whl
+```
+### 4. Install OpenCV
+```
+sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+sudo apt-get install libxvidcore-dev libx264-dev
+sudo apt-get install qt4-dev-tools libatlas-base-dev
+sudo pip3 install opencv-python
+```
+### 5. Compile and Install Protobuf
+```
+sudo apt-get install protobuf-compiler
+```
+Run `protoc --version` once that's done to verify it is installed. You should get a response of `libprotoc 3.6.1` or similar.
 
-The [research models](https://github.com/tensorflow/models/tree/master/research) are a large collection of models implemented in TensorFlow by researchers. They are not officially supported or available in release branches; it is up to the individual researchers to maintain the models and/or provide support on issues and pull requests.
 
-The [samples folder](samples) contains code snippets and smaller models that demonstrate features of TensorFlow, including code presented in various blog posts.
-
-The [tutorials folder](tutorials) is a collection of models described in the [TensorFlow tutorials](https://www.tensorflow.org/tutorials/).
-
-## Contribution guidelines
-
-If you want to contribute to models, be sure to review the [contribution guidelines](CONTRIBUTING.md).
-
-## License
-
-[Apache License 2.0](LICENSE)
+## Reference
+https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi
