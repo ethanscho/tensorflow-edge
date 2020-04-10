@@ -63,8 +63,8 @@ class Model(object):
 
 
 tf.reset_default_graph()
-#MODEL_PATH = "weights/deeplab_v3_plus_mnv2_decoder_513.pb"
-MODEL_PATH = "datasets/people_segmentation/exp/deeplab-v3-plus/export/frozen_model.pb"
+MODEL_PATH = "weights/frozen_model.pb"
+#MODEL_PATH = "datasets/people_segmentation/exp/deeplab-v3-plus/export/frozen_model.pb"
 model = Model(model_filepath=MODEL_PATH)
 
 TEST_DIR = 'datasets/picsart/test/'
@@ -75,6 +75,8 @@ INPUT_SIZE = 513
 test_imgs = os.listdir(TEST_DIR)
 
 for i, img_path in enumerate(test_imgs):
+    print(img_path)
+
     img_name = img_path
     img_name = img_name.split('.')[0]
     img_path = os.path.join(TEST_DIR, img_path)
