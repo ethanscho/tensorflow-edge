@@ -4,6 +4,7 @@ import time
 import model
 import numpy as np
 import matplotlib.pyplot as plt
+import tflite_runtime.interpreter as tflite
 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
@@ -12,8 +13,18 @@ IM_WIDTH = 640
 IM_HEIGHT = 480
 INPUT_SIZE = 513
 
-# load deeplab-v3-plus model
-model = model.Model(model_filepath='../../research/deeplab-v3-plus/weights/saved_model.pb')
+# load deeplab-v3-plus tflite model
+model_path = '../../research/deeplab-v3-plus/weights/model.tflite'
+#interpreter = tflite.Interpreter(model_path)
+interpreter = tflite.Interpreter(model_path,
+  experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
+interpreter.allocate_tensors()
+
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+floating_model = input_details[0]['dtype'] == np.float32
+print(floating_model)
 
 # Initialize frame rate calculation
 frame_rate_calc = 1
@@ -38,21 +49,24 @@ for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=
     frame_rgb = frame_rgb[np.newaxis, ...] # expand dim for batch
     frame_rgb = (2.0 / 255.0) * frame_rgb - 1.0 # normalize image
 
-    start_timestamp = time.time()
-    output = model.predict(frame_rgb)[0]
-    print(time.time() - start_timestamp)
+    frame_rgb = np.float32(frame_rgb)
 
-    output = output[:,:,1]
-    print(output.shape)
-    
-    #output = np.squeeze(output, axis=-1)
+    # infer 
+    start_timestamp = time.time()
+    interpreter.set_tensor(input_details[0]['index'], frame_rgb)
+    interpreter.invoke()
+
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+    output = np.squeeze(output_data)
+    print(time.time() - start_timestamp)
 
     filters = output[output > 0]
     print(filters)
+    #output = (output - 0.99) / 0.01
 
+    # draw mask
     mask_image = np.zeros((INPUT_SIZE, INPUT_SIZE, 1))
     mask_image[:,:,0] = output
-
     mask_image = cv2.resize(mask_image, (IM_WIDTH, IM_HEIGHT))
     
     for c in range(3):

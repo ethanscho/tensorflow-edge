@@ -9,12 +9,16 @@ os.system('wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/'
 pil_image = Image.open('couple.jpg')
 pil_image.resize((641, 481), Image.NEAREST)
 engine = PoseEngine('models/mobilenet/posenet_mobilenet_v1_075_481_641_quant_decoder_edgetpu.tflite')
+
+np_image = np.uint8(pil_image)
+print(np_image.shape)
+
 poses, inference_time = engine.DetectPosesInImage(np.uint8(pil_image))
 print('Inference time: %.fms' % inference_time)
 
-for pose in poses:
-    if pose.score < 0.4: continue
-    print('\nPose Score: ', pose.score)
-    for label, keypoint in pose.keypoints.items():
-        print(' %-20s x=%-4d y=%-4d score=%.1f' %
-              (label, keypoint.yx[1], keypoint.yx[0], keypoint.score))
+# for pose in poses:
+#     if pose.score < 0.4: continue
+#     print('\nPose Score: ', pose.score)
+#     for label, keypoint in pose.keypoints.items():
+#         print(' %-20s x=%-4d y=%-4d score=%.1f' %
+#               (label, keypoint.yx[1], keypoint.yx[0], keypoint.score))

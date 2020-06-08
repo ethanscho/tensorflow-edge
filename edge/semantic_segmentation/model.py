@@ -53,7 +53,8 @@ class Model(object):
         '''
 
     def predict(self, data):
-        output_tensor = self.graph.get_tensor_by_name("import/Output:0")
+        #output_tensor = self.graph.get_tensor_by_name("import/Output:0")
+        output_tensor = self.graph.get_tensor_by_name("import/ResizeBilinear_1:0")
         output = self.sess.run(output_tensor, feed_dict = {self.input: data})
 
         return output

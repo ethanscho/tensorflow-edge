@@ -6,12 +6,13 @@ from picamera import PiCamera
 import matplotlib.pyplot as plt
 from picamera.array import PiRGBArray
 
+from pose_engine import PoseEngine
+
 IM_WIDTH = 640
 IM_HEIGHT = 480
-INPUT_SIZE = 513
 
 # load deeplab-v3-plus model
-#model = model.Model(model_filepath='../../research/deeplab-v3-plus/weights/saved_model.pb')
+engine = PoseEngine('models/mobilenet/posenet_mobilenet_v1_075_481_641_quant_decoder_edgetpu.tflite')
 
 # Initialize frame rate calculation
 frame_rate_calc = 1
@@ -25,36 +26,23 @@ rawCapture = PiRGBArray(camera, size=(IM_WIDTH,IM_HEIGHT))
 rawCapture.truncate(0)
 
 for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-
     t1 = cv2.getTickCount()
     
     frame = np.copy(frame1.array)
     frame.setflags(write=1)
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    frame_rgb = cv2.resize(frame, (INPUT_SIZE, INPUT_SIZE))
-    frame_rgb = frame_rgb[np.newaxis, ...] # expand dim for batch
-    frame_rgb = (2.0 / 255.0) * frame_rgb - 1.0 # normalize image
+    frame_rgb = cv2.resize(frame, (IM_WIDTH, IM_HEIGHT))
+    poses, inference_time = engine.DetectPosesInImage(np.uint8(frame_rgb))
+    print('Inference time: %.fms' % inference_time)
 
-    start_timestamp = time.time()
-    # output = model.predict(frame_rgb)[0]
-    # print(time.time() - start_timestamp)
-
-    # output = output[:,:,1]
-    # print(output.shape)
-    
-    # #output = np.squeeze(output, axis=-1)
-
-    # filters = output[output > 0]
-    # print(filters)
-
-    # mask_image = np.zeros((INPUT_SIZE, INPUT_SIZE, 1))
-    # mask_image[:,:,0] = output
-
-    # mask_image = cv2.resize(mask_image, (IM_WIDTH, IM_HEIGHT))
-    
-    # for c in range(3):
-    #     frame[:,:,c] = frame[:,:,c] * mask_image
+    for pose in poses:
+        if pose.score < 0.4: continue
+        print('\nPose Score: ', pose.score)
+        for label, keypoint in pose.keypoints.items():
+            print(' %-20s x=%-4d y=%-4d score=%.1f' %
+                (label, keypoint.yx[1], keypoint.yx[0], keypoint.score))
+            cv2.circle(frame, (keypoint.yx[1], keypoint.yx[0]), 10, (255, 0, 0), 4) 
 
     cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('semantic segmentation', frame)
