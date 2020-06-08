@@ -9,18 +9,10 @@ This repo contains a set of PoseNet models that are quantized and optimized for
 use on Coral's Edge TPU, together with some example code to shows how to run it
 on a camera stream.
 
-## Examples in this repo
+## Example outputs
 
-NOTE: PoseNet relies on the latest Coral API (2.12.2) and for the Dev Board the latest system image - please update your
-system before running these examples. For more information on updating see:
-  * For [Coral DevBoard](https://coral.withgoogle.com/docs/dev-board/get-started/#update-the-mendel-software)
-  * For [USB Accelerator](https://coral.withgoogle.com/docs/accelerator/get-started/#set-up-on-linux-or-raspberry-pi)
-
-To install all the requirements, simply run 
-
-```
-sh install_requirements.sh
-```
+By running the pose_picamera.py you can get pose information like the screenshot below.
+![alt text](results/screenshot.png)
 
 ### simple_pose.py
 
