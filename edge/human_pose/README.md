@@ -16,13 +16,21 @@ By running the pose_picamera.py you can get pose information like the screenshot
 
 ### simple_pose.py
 
-
 A minimal example that simply downloads an image, and prints the pose
 keypoints.
 
 ```bash
 python3 simple_pose.py
 ```
+
+### squat_counter.py
+
+By analyzing keypoints positions, it counts squat motions.
+
+```bash
+python3 squat_counter.py
+```
+![alt text](results/squat.gif)
 
 ### pose_camera.py
 
