@@ -119,3 +119,6 @@ edge/human_pose/models
 # images
 edge/semantic_segmentation/images
 edge/semantic_segmentation/results
+
+unity/Logs/
+unity/Libray/
