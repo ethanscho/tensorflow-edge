@@ -1,31 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TensorFlowLite;
 
 public class SquatController : MonoBehaviour
 {
 	public PoseNetSample poseNetSample;
+    public Text counterText;
+    bool counterable = true;
+    int count = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float hipPosY;
+    float kneePosY;
 
-    // Update is called once per frame
     void Update()
     {
         var results = poseNetSample.results;
 
-        foreach(PoseNet.Result result in results)
+        foreach (PoseNet.Result result in results)
         {
             if (result.confidence > 0.5f)
             {
-                Debug.Log(result.part);
-                Debug.Log(result.x);
-                Debug.Log(result.y);
+                if (result.part == PoseNet.Part.LEFT_HIP)
+                {
+                    hipPosY = result.y;
+                }
+                else if (result.part == PoseNet.Part.RIGHT_HIP)
+                {
+                    hipPosY = result.y;
+                }
+                else if (result.part == PoseNet.Part.LEFT_KNEE)
+                {
+                    kneePosY = result.y;
+                }
+                else if (result.part == PoseNet.Part.RIGHT_KNEE)
+                {
+                    kneePosY = result.y;
+                }
             }
         }
-	}
+
+        //Debug.Log("knee: " + kneePosY);
+        //Debug.Log("hip: " + hipPosY);
+
+        if (counterable)
+        {
+            if (hipPosY > kneePosY)
+            {
+                count += 1;
+                counterText.text = count.ToString();
+
+                counterable = false;
+            }
+        }
+        else
+        {
+            //Debug.Log(hipPosY - kneePosY);
+            if (kneePosY - hipPosY > 0.1f)
+            {
+                
+
+                counterable = true;
+            }
+        }
+
+    }
 }
