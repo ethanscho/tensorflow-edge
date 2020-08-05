@@ -10,6 +10,7 @@ public class SquatController : MonoBehaviour
     public Text counterText;
     bool counterable = true;
     int count = 0;
+    public List<ProgressBarItem> progressBarItems = new List<ProgressBarItem>();
 
     float hipPosY;
     float kneePosY;
@@ -52,6 +53,8 @@ public class SquatController : MonoBehaviour
                 counterText.text = count.ToString();
 
                 counterable = false;
+
+                UpdateProgressBar();
             }
         }
         else
@@ -59,11 +62,21 @@ public class SquatController : MonoBehaviour
             //Debug.Log(hipPosY - kneePosY);
             if (kneePosY - hipPosY > 0.1f)
             {
-                
-
                 counterable = true;
             }
         }
+    }
 
+    void UpdateProgressBar()
+    {
+        foreach(ProgressBarItem item in progressBarItems)
+        {
+            item.ChangeColor(Color.white);
+        }
+
+        for (int i=0; i < count; i++)
+        {
+            progressBarItems[i].ChangeColor(Color.green);
+        }
     }
 }

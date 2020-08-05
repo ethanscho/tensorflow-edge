@@ -67,6 +67,7 @@
      <Compile Include="Assets\Common\WebCamUtil.cs" />
      <Compile Include="Assets\PoseNet\PoseNet.cs" />
      <Compile Include="Assets\PoseNet\PoseNetSample.cs" />
+     <Compile Include="Assets\PoseNet\ProgressBarItem.cs" />
      <Compile Include="Assets\PoseNet\SquatController.cs" />
      <Compile Include="Assets\TensorFlowLite\Examples\HelloTFLite\Scripts\HelloTFLite.cs" />
      <Compile Include="Assets\TensorFlowLite\SDK\Scripts\GlDelegate.cs" />
