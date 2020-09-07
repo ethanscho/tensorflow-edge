@@ -85,15 +85,35 @@ namespace TensorFlowLite
         {
             const float OFFSET = 128f;
             const float SCALE = 1f / 128f;
-            ToTensor(inputTex, inputs, OFFSET, SCALE);
+            ToTensor(inputTex, input0, OFFSET, SCALE);
 
-            interpreter.SetInputTensorData(0, inputs);
+            interpreter.SetInputTensorData(0, input0);
             interpreter.Invoke();
             interpreter.GetOutputTensorData(0, outputs0);
             interpreter.GetOutputTensorData(1, outputs1);
             // not using
             // interpreter.GetOutputTensorData(2, outputs2);
             // interpreter.GetOutputTensorData(3, outputs3);
+        }
+
+        Texture2D FlipTexture(Texture2D original)
+        {
+            Texture2D flipped = new Texture2D(original.width, original.height);
+
+            int xN = original.width;
+            int yN = original.height;
+
+
+            for (int i = 0; i < xN; i++)
+            {
+                for (int j = 0; j < yN; j++)
+                {
+                    flipped.SetPixel(xN - i - 1, j, original.GetPixel(i, j));
+                }
+            }
+            flipped.Apply();
+
+            return flipped;
         }
 
         public Result[] GetResults()
@@ -125,11 +145,6 @@ namespace TensorFlowLite
             return results;
         }
 
-        static float Sigmoid(float x)
-        {
-            return (1.0f / (1.0f + Mathf.Exp(-x)));
-        }
-
         static void ApplySigmoid(float[,,] arr)
         {
             int rows = arr.GetLength(0); // y
@@ -142,7 +157,7 @@ namespace TensorFlowLite
                 {
                     for (int part = 0; part < parts; part++)
                     {
-                        arr[y, x, part] = Sigmoid(arr[y, x, part]);
+                        arr[y, x, part] = MathTF.Sigmoid(arr[y, x, part]);
                     }
                 }
             }

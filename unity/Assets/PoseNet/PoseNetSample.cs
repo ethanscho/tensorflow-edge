@@ -24,7 +24,16 @@ public class PoseNetSample : MonoBehaviour
         poseNet = new PoseNet(path);
 
         // Init camera
-        string cameraName = WebCamUtil.FindName();
+        string cameraName = ""; //WebCamUtil.FindName();
+
+        for (var i = 0; i < WebCamTexture.devices.Length; i++)
+        {
+            if (WebCamTexture.devices[i].isFrontFacing)
+            {
+                cameraName = WebCamTexture.devices[i].name;
+            }
+        }
+
         webcamTexture = new WebCamTexture(cameraName, 640, 480, 30);
         webcamTexture.Play();
         cameraView.texture = webcamTexture;
@@ -70,21 +79,11 @@ public class PoseNetSample : MonoBehaviour
             var b = results[(int)connections[i, 1]];
             if (a.confidence >= threshold && b.confidence >= threshold)
             {
-                GL.Vertex(Leap3(min, max, new Vector3(a.x, 1f - a.y, 0)));
-                GL.Vertex(Leap3(min, max, new Vector3(b.x, 1f - b.y, 0)));
+                GL.Vertex(MathTF.Leap3(min, max, new Vector3(a.x, 1f - a.y, 0)));
+                GL.Vertex(MathTF.Leap3(min, max, new Vector3(b.x, 1f - b.y, 0)));
             }
         }
 
         GL.End();
     }
-
-    static Vector3 Leap3(in Vector3 a, in Vector3 b, in Vector3 t)
-    {
-        return new Vector3(
-            Mathf.Lerp(a.x, b.x, t.x),
-            Mathf.Lerp(a.y, b.y, t.y),
-            Mathf.Lerp(a.z, b.z, t.z)
-        );
-    }
-
 }
