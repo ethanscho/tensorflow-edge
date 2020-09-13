@@ -69,10 +69,11 @@
     <Compile Include="Assets\PoseNet\SquatController.cs" />
     <Compile Include="Assets\PoseNet\PoseNetSample.cs" />
     <Compile Include="Assets\Common\GoToSceneButton.cs" />
+    <Compile Include="Assets\Scripts\Calendar\CalendarController.cs" />
     <Compile Include="Assets\PoseNet\PoseNet.cs" />
+    <Compile Include="Assets\Scripts\MenuSceneController.cs" />
     <Compile Include="Assets\Common\DisposeUtil.cs" />
     <Compile Include="Assets\Common\TextureResizer.cs" />
-    <Compile Include="Assets\Scripts\MenuSceneController.cs" />
     <None Include="Assets\Resources\Resize.shader" />
     <None Include="Assets\Resources\LineShader.shader" />
     <None Include="Assets\Resources\TextureToTensor.compute" />
