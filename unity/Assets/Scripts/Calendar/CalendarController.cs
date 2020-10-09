@@ -24,8 +24,6 @@ public class CalendarController : MonoBehaviour
 
         monthYearText.text = year.ToString() + "." + now.Month.ToString();
 
-        print(days);
-
         for (int i = 0; i < days; i++)
         {
             DateTime date = new DateTime(year, month, i + 1);
@@ -35,8 +33,6 @@ public class CalendarController : MonoBehaviour
                 week += 1;
 
             int dayIndex = (int)day + week * 7;
-            //print(dayIndex);
-            print(dayIndex);
             calendarDays[dayIndex].Display(date);
         }
     }

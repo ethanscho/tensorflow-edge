@@ -14,5 +14,10 @@ public class CalendarDay : MonoBehaviour
         this.date = date;
 
         day.text = date.Day.ToString();
+
+        if (date == DateTime.Today)
+        {
+            day.color = new Color(68 / 255f, 148 / 255f, 171 / 255f);
+        }
     }
 }
