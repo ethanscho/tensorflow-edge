@@ -103,7 +103,6 @@ namespace TensorFlowLite
             int xN = original.width;
             int yN = original.height;
 
-
             for (int i = 0; i < xN; i++)
             {
                 for (int j = 0; j < yN; j++)

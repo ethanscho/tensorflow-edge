@@ -49,7 +49,7 @@ namespace TensorFlowLite
                 aspectMode = TextureResizer.AspectMode.Fill,
                 rotationDegree = 0,
                 flipX = false,
-                flipY = false,
+                flipY = true,
                 width = width,
                 height = height,
             };
