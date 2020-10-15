@@ -20,4 +20,10 @@ public class CalendarDay : MonoBehaviour
             day.color = new Color(68 / 255f, 148 / 255f, 171 / 255f);
         }
     }
+
+    public void ShowCircle ()
+    {
+        GameObject circlePrefab = Resources.Load("Prefabs/Circle") as GameObject;
+        Instantiate(circlePrefab, transform);
+    }
 }

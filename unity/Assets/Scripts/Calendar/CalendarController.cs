@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class CalendarController : MonoBehaviour
 {
     public Text monthYearText;
-    public CalendarDay calendarDayPrefab;
     public Transform calendarDayParent;
     List<CalendarDay> calendarDays = new List<CalendarDay>();
     int week = 0;
@@ -34,15 +33,22 @@ public class CalendarController : MonoBehaviour
 
             int dayIndex = (int)day + week * 7;
             calendarDays[dayIndex].Display(date);
+
+            if (UnityEngine.Random.Range(0, 4) == 0)
+                calendarDays[dayIndex].ShowCircle();
         }
     }
 
     void InstantiateDays ()
     {
+        GameObject calendarDayPrefab = Resources.Load("Prefabs/CalendarDay") as GameObject;
         for (int i=0; i < 40; i++)
         {
-            CalendarDay calendarDay = Instantiate(calendarDayPrefab, calendarDayParent) as CalendarDay;
-            calendarDays.Add(calendarDay);
+            GameObject calendarDay = Instantiate(calendarDayPrefab, calendarDayParent);
+            CalendarDay calendarDayScript = calendarDay.GetComponent<CalendarDay>();
+            calendarDays.Add(calendarDayScript);
+
+            //calendarDayScript.ShowCircle();
         }
     }
 }
