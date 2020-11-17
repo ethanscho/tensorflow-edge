@@ -16,9 +16,8 @@ public class DatabaseController : MonoBehaviour
 
         print(Application.persistentDataPath);
 
-        //CreateTable();
+        CreateTable();
         InsertExcerciseHistory();
-
         ReadTable();
     }
 
@@ -29,7 +28,7 @@ public class DatabaseController : MonoBehaviour
 
         dbcmd = dbcon.CreateCommand();
         string q_createTable =
-          "CREATE TABLE IF NOT EXISTS history (excercise_id INTEGER, date TEXT )";
+          "CREATE TABLE IF NOT EXISTS history (exercise_id INTEGER, date TEXT )";
 
         dbcmd.CommandText = q_createTable;
         reader = dbcmd.ExecuteReader();
@@ -40,7 +39,7 @@ public class DatabaseController : MonoBehaviour
         DateTime now = System.DateTime.Now;
 
         IDbCommand cmnd = dbcon.CreateCommand();
-        cmnd.CommandText = "INSERT INTO history (excercise_id, date) VALUES (0, '" + now.ToString("dd/MM/yyyy") + "')";
+        cmnd.CommandText = "INSERT INTO history (exercise_id, date) VALUES (0, '" + now.ToString("dd/MM/yyyy") + "')";
         cmnd.ExecuteNonQuery();
     }
 
@@ -54,7 +53,7 @@ public class DatabaseController : MonoBehaviour
 
         while (reader.Read())
         {
-            Debug.Log("excercise_id: " + reader[0].ToString());
+            Debug.Log("exercise_id: " + reader[0].ToString());
             Debug.Log("date: " + reader[1].ToString());
         }
 
