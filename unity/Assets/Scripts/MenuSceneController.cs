@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuSceneController : MonoBehaviour
+public enum ExcerciseId
+{
+    Squat,
+    JumpingSquat,
+}
+
+public class MenuSceneController : Singleton<MenuSceneController>
 {
     // Start is called before the first frame update
     void Start()
@@ -11,8 +17,8 @@ public class MenuSceneController : MonoBehaviour
         
     }
 
-    public void OnClickExerciseItem ()
+    public void OnClickExerciseItem (ExcerciseId excerciseId)
     {
-        SceneManager.LoadScene("PoseNet");
+        SceneManager.LoadScene(excerciseId.ToString());
     }
 }
