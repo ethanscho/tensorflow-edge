@@ -28,7 +28,7 @@ public class CalendarController : MonoBehaviour
             DateTime date = new DateTime(year, month, i + 1);
             DayOfWeek day = date.DayOfWeek; // 0: sun 6: sat
 
-            if ((int)day == 0)
+            if ((int)day == 0 && i > 0) // sunday
                 week += 1;
 
             int dayIndex = (int)day + week * 7;
