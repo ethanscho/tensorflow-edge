@@ -4,7 +4,7 @@ using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
 
-public class DatabaseController : MonoBehaviour
+public class DatabaseController : Singleton<DatabaseController>
 {
     IDbConnection dbcon;
 
@@ -17,7 +17,7 @@ public class DatabaseController : MonoBehaviour
         print(Application.persistentDataPath);
 
         CreateTable();
-        InsertExcerciseHistory();
+        //InsertExcerciseHistory();
         ReadTable();
     }
 
