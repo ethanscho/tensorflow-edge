@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
@@ -7,6 +8,7 @@ using System.IO;
 public class DatabaseController : Singleton<DatabaseController>
 {
     IDbConnection dbcon;
+    List<DateTime> dateTimes = new List<DateTime>();
 
     void Start()
     {
@@ -17,7 +19,7 @@ public class DatabaseController : Singleton<DatabaseController>
         print(Application.persistentDataPath);
 
         CreateTable();
-        //InsertExcerciseHistory();
+        InsertExcerciseHistory();
         ReadTable();
     }
 
@@ -39,7 +41,7 @@ public class DatabaseController : Singleton<DatabaseController>
         DateTime now = System.DateTime.Now;
 
         IDbCommand cmnd = dbcon.CreateCommand();
-        cmnd.CommandText = "INSERT INTO history (exercise_id, date) VALUES (0, '" + now.ToString("dd/MM/yyyy") + "')";
+        cmnd.CommandText = "INSERT INTO history (exercise_id, date) VALUES (0, '" + now.ToString("yyyy-MM-dd") + "')";
         cmnd.ExecuteNonQuery();
     }
 
@@ -55,9 +57,19 @@ public class DatabaseController : Singleton<DatabaseController>
         {
             Debug.Log("exercise_id: " + reader[0].ToString());
             Debug.Log("date: " + reader[1].ToString());
+
+            DateTime dateTime = System.DateTime.Parse(reader[1].ToString());
+            print(dateTime.ToString("yyyy-MM-dd"));
+
+            dateTimes.Add(dateTime);
         }
 
         // Close connection
         dbcon.Close();
+    }
+
+    public bool IsDateSaved (DateTime dateTime)
+    {
+        return dateTimes.Contains(dateTime);
     }
 }

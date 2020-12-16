@@ -34,8 +34,11 @@ public class CalendarController : MonoBehaviour
             int dayIndex = (int)day + week * 7;
             calendarDays[dayIndex].Display(date);
 
-            if (UnityEngine.Random.Range(0, 4) == 0)
+            if (DatabaseController.Instance.IsDateSaved(date))
                 calendarDays[dayIndex].ShowCircle();
+
+            //if (UnityEngine.Random.Range(0, 4) == 0)
+            //    calendarDays[dayIndex].ShowCircle();
         }
     }
 
